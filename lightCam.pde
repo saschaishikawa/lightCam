@@ -65,7 +65,10 @@ void draw(){
     if(interval >= 10) // prevent crowding points
       ellipse(points.get(i).x, points.get(i).y, 5, 5);
   }
+  pushStyle();
+  stroke(0,0,0);
   ellipse(x, y, 10, 10);
+  popStyle();
 }
 
 class Point {
