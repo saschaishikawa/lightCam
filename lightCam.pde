@@ -1,6 +1,6 @@
 /*
  * This application serves as an educational tool to visualize 
- * lightcurves and to demonstrate the formation of planetary transits.
+ * lightcurves and demonstrate the formation of planetary transits.
  */
  
 import processing.video.*;
