@@ -4,7 +4,7 @@ A light curve visualizer.
 
 Description
 ===========
-This application serves as an educational tool to visualize light curves and demonstrate the formation of planetary transits. To use it you must (1) have a webcam installed, (2) download and install the Processing programming environment (https://processing.org/download/) and (3) run the included `lightCam.pde` code. Enjoy!
+This application serves as an educational tool to visualize light curves and demonstrate the formation of planetary transits. You can run the platform-specific applications provided in the `application.*` folders. You'll need a webcam. If you want to make changes to the code you must download and install the Processing programming environment (https://processing.org/download/) and run the included `lightCam.pde` code. Enjoy!
 
 How it works
 ============
