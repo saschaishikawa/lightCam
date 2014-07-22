@@ -11,14 +11,18 @@ int tick = 0;
 float b_avg = 0;
 int x, y, interval;
 ArrayList<Point> points;
+int WID;
+int HEI;
 
 void setup() {
-  size(320, 240);
+  WID = 320;
+  HEI = 240;
+  size(WID, HEI);
   frameRate(fps);
   interval = 1; // sets plotting interval (e.g. 1 for one point per frame)
   
   // initialize webcam
-  cam = new Capture(this, 320, 240, fps);
+  cam = new Capture(this, WID, HEI, fps);
   cam.start();
   
   // drawing settings
@@ -34,7 +38,7 @@ void draw(){
   if(cam.available()){
     cam.read();
     tick = tick + interval;
-    if (tick > 320) { // reset
+    if (tick > WID) { // reset
       points.clear();
       tick = 0;
     }
@@ -47,7 +51,7 @@ void draw(){
   for (int i = 0; i < cam.pixels.length; i++) {
     sum = sum + brightness(cam.pixels[i]);
   }
-  println("AVG BRIGHTNESS: ", sum/cam.pixels.length);
+//  println("AVG BRIGHTNESS: ", sum/cam.pixels.length);
 
   x = tick;
   y = 255-round(sum/cam.pixels.length);
