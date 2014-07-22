@@ -24,7 +24,7 @@ void setup() {
   // drawing settings
   smooth();
   fill(255, 255, 0);
-  stroke(0, 0, 0);
+  stroke(200, 200, 0);
   strokeWeight(1.5);
   
   points = new ArrayList<Point>();
@@ -40,6 +40,7 @@ void draw(){
     }
   }
   cam.filter(BLUR, 60); // blur image (more realistic lightcurve)  
+  cam.filter(GRAY);
   image(cam, 0, 0);
 
   float sum = 0;
