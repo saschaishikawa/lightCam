@@ -7,7 +7,7 @@ import processing.video.*;
 Capture cam;
 
 int fps = 30; 
-int tick = 0;
+int tick = 0; 
 float b_avg = 0;
 int x, y, interval;
 ArrayList<Point> points;
