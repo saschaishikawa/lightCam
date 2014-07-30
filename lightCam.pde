@@ -3,23 +3,27 @@
  * lightcurves and demonstrate the formation of planetary transits.
  */
  
-import processing.video.*;
+import processing.video.*; 
 Capture cam;
 
 int fps = 30; 
-int tick = 0; 
-float b_avg = 0;
-int x, y, interval;
-ArrayList<Point> points;
-int WID;
-int HEI;
+int x, y, plot_interval, tick;
+int WID, HEI;
 
-void setup() {
-  WID = 320;
-  HEI = 240;
-  size(WID, HEI);
-  frameRate(fps);
-  interval = 1; // sets plotting interval (e.g. 1 for one point per frame)
+ArrayList<Point> points;
+
+public void setup() {
+  size(640, 480); // set canvas dimensions
+  
+  // capture dimensions
+  WID = 160;
+  HEI = 120;
+  
+  // allow resizing
+  if (frame != null)
+    frame.setResizable(true);
+  
+  plot_interval = 20;
   
   // initialize webcam
   cam = new Capture(this, WID, HEI, fps);
@@ -29,50 +33,81 @@ void setup() {
   smooth();
   fill(255, 255, 0);
   stroke(200, 200, 0);
-  strokeWeight(1.5);
+  strokeWeight(1.5f);
   
   points = new ArrayList<Point>();
 }
 
-void draw(){
+public void draw(){
   if(cam.available()){
     cam.read();
-    tick = tick + interval;
-    if (tick > WID) { // reset
+    tick = tick + plot_interval;
+    if (tick > width) { // reset
       points.clear();
       tick = 0;
     }
   }
-  cam.filter(BLUR, 60); // blur image (more realistic lightcurve)  
+  
+  // display image
   cam.filter(GRAY);
-  image(cam, 0, 0);
+  cam.filter(BLUR,5);
+  
+  background(0);
+  stretchImageToSize(cam, width, height);
+  image( cam, 0, 0);
+  drawPoints();
+}
 
+public void drawPoints(){
   float sum = 0;
-  for (int i = 0; i < cam.pixels.length; i++) {
+  for (int i = 0; i < cam.pixels.length; i++)
     sum = sum + brightness(cam.pixels[i]);
-  }
-//  println("AVG BRIGHTNESS: ", sum/cam.pixels.length);
 
   x = tick;
-  y = 255-round(sum/cam.pixels.length);
+  y = round( map(255-sum/cam.pixels.length, 0, 255, 0, height) );
+  
+  // OUTPUT TEXT
+  println("AVG BRIGHTNESS: ", y);
 
   points.add(new Point(x, y));
+
   for (int i = 0; i < points.size (); i++ ) {
    if (i == 0)
       continue;
-      
     pushStyle();
-    strokeWeight(1.5);
+    strokeWeight(1.5f);
     fill(255,255,0);
-    popStyle();
     line(points.get(i-1).x, points.get(i-1).y, points.get(i).x, points.get(i).y);
-    if(interval >= 10) // prevent crowding points
+    if(plot_interval >= 10) // prevent crowding points
       ellipse(points.get(i).x, points.get(i).y, 5, 5);
+    popStyle();
   }
   pushStyle();
-  stroke(0,0,0);
+  stroke(200,100,20);
+  strokeWeight(2);
   ellipse(x, y, 10, 10);
-  popStyle();
+  popStyle(); 
+}
+
+public boolean stretchImageToSize(PImage img, int target_wid, int target_hei){
+  if( img.width >= target_wid || img.height >= target_hei )
+    return false;
+    
+  int ellipse_wid = round( target_wid/img.width );
+  int ellipse_hei = round( target_hei/img.height );
+  int value = 0;
+  img.loadPixels();
+  for( int j=0; j<img.height; j++){
+    for(int i=0; i<img.width; i++){
+      value = img.pixels[i+j*img.width];
+      pushStyle();
+      fill(value);
+      noStroke();
+      ellipse(i*ellipse_wid,j*ellipse_hei,ellipse_wid,ellipse_hei);
+      popStyle();
+    } 
+  }
+  return true;
 }
 
 class Point {
