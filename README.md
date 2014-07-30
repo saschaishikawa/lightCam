@@ -8,4 +8,4 @@ This application serves as an educational tool to visualize light curves and dem
 
 How it works
 ============
-The Processing sketch `lightCam.pde` uses your webcam to come up with an average brightness for each frame. The frames are blurred to remove unwanted noise and make the "light curve" more realistic. Note that most webcams recalibrate after sudden changes in brightness which results in a sudden peak in the plot which are not found in real light curves. Otherwise, each frame represents a single observation, or data point, analogous to how NASA's Kepler telescope generates its light curves.
+The lightCam app uses your webcam to create a "light curve" by taking a picture every 30 seconds and plotting its average brightness. The higher the point appears in the plot, the brighter the frame and vice versa. Note that most webcams recalibrate after sudden changes in brightness which results in a sudden peak in the plot which is not found in real light curves. Otherwise, each frame represents a single observation, or data point, not unlike the light curves generated from NASA's Kepler telescope.
