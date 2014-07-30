@@ -4,7 +4,7 @@ A light curve visualizer.
 
 Description
 ===========
-This application serves as an educational tool to visualize light curves and demonstrate the formation of planetary transits. You can run the platform-specific applications provided in the `application.*` folders. You'll need the latest version of Java 7 and a webcam. If you want to make changes to the code, download and install the Processing programming environment (https://processing.org/download/) and run the included `lightCam.pde` code. Enjoy!
+This application serves as an educational tool to visualize light curves and demonstrate the formation of planetary transits. You can run the platform-specific applications provided in the `application.*` folders. You'll need the latest version of Java 7 and a webcam. If you want to make changes to the code, download and install the Processing programming environment (https://processing.org/download/) and open the `lightCam.pde` file. Enjoy!
 
 How it works
 ============
