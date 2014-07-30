@@ -25,14 +25,15 @@ public class lightCam extends PApplet {
 Capture cam;
 
 int fps = 30; 
-int x, y, plot_interval, tick;
+int x, y, point_dist, ellipse_rad, stroke_weight, tick;
 int WID, HEI;
 
 ArrayList<Point> points;
 
 public void setup() {
   size(640, 480); // set canvas dimensions
-  
+  smooth(); // anti-aliasing
+
   // capture dimensions
   WID = 160;
   HEI = 120;
@@ -40,36 +41,32 @@ public void setup() {
   // allow resizing
   if (frame != null)
     frame.setResizable(true);
-  
-  plot_interval = 20;
-  
+    
   // initialize webcam
   cam = new Capture(this, WID, HEI, fps);
   cam.start();
-  
-  // drawing settings
-  smooth();
-  fill(255, 255, 0);
-  stroke(200, 200, 0);
-  strokeWeight(1.5f);
-  
+    
   points = new ArrayList<Point>();
 }
 
 public void draw(){
   if(cam.available()){
     cam.read();
-    tick = tick + plot_interval;
-    if (tick > width) { // reset
+    
+    // calculate dynamic styles
+    ellipse_rad = round(0.01f*width);
+    stroke_weight = round(0.005f*width);
+    point_dist = round(0.05f*width);
+    
+    tick = tick + point_dist;
+    if (tick > width) { // reset plot
       points.clear();
       tick = 0;
     }
   }
   
-  // display image
   cam.filter(GRAY);
-  cam.filter(BLUR,5);
-  
+  cam.filter(BLUR, 5);
   background(0);
   stretchImageToSize(cam, width, height);
   image( cam, 0, 0);
@@ -93,17 +90,19 @@ public void drawPoints(){
    if (i == 0)
       continue;
     pushStyle();
-    strokeWeight(1.5f);
+    strokeWeight(stroke_weight);
     fill(255,255,0);
+    stroke(255,255,0);
     line(points.get(i-1).x, points.get(i-1).y, points.get(i).x, points.get(i).y);
-    if(plot_interval >= 10) // prevent crowding points
-      ellipse(points.get(i).x, points.get(i).y, 5, 5);
+    if(point_dist >= 10) // prevent crowding points
+      ellipse(points.get(i).x, points.get(i).y, ellipse_rad, ellipse_rad);
     popStyle();
   }
   pushStyle();
+  fill(255, 255, 0);
   stroke(200,100,20);
-  strokeWeight(2);
-  ellipse(x, y, 10, 10);
+  strokeWeight(stroke_weight);
+  ellipse(x, y, 2*ellipse_rad, 2*ellipse_rad);
   popStyle(); 
 }
 
@@ -135,7 +134,6 @@ class Point {
     this.y = y;
   }
 }
-
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "lightCam" };
     if (passedArgs != null) {
