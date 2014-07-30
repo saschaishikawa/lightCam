@@ -7,7 +7,7 @@ import processing.video.*;
 Capture cam;
 
 int fps = 30; 
-int x, y, plot_interval, tick;
+int x, y, point_dist, tick;
 int WID, HEI;
 
 ArrayList<Point> points;
@@ -22,9 +22,7 @@ public void setup() {
   // allow resizing
   if (frame != null)
     frame.setResizable(true);
-  
-  plot_interval = 20;
-  
+    
   // initialize webcam
   cam = new Capture(this, WID, HEI, fps);
   cam.start();
@@ -41,7 +39,8 @@ public void setup() {
 public void draw(){
   if(cam.available()){
     cam.read();
-    tick = tick + plot_interval;
+    point_dist = round(0.05*width);
+    tick = tick + point_dist;
     if (tick > width) { // reset
       points.clear();
       tick = 0;
@@ -78,7 +77,7 @@ public void drawPoints(){
     strokeWeight(1.5f);
     fill(255,255,0);
     line(points.get(i-1).x, points.get(i-1).y, points.get(i).x, points.get(i).y);
-    if(plot_interval >= 10) // prevent crowding points
+    if(point_dist >= 10) // prevent crowding points
       ellipse(points.get(i).x, points.get(i).y, 5, 5);
     popStyle();
   }
