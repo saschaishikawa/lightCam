@@ -36,9 +36,9 @@ public void draw(){
     cam.read();
     
     // calculate dynamic styles
-    ellipse_rad = round(0.01*width);
-    stroke_weight = round(0.005*width);
-    point_dist = round(0.05*width);
+    ellipse_rad = round(0.005*width);
+    stroke_weight = round(0.002*width);
+    point_dist = round(0.01*width);
     
     tick = tick + point_dist;
     if (tick > width) { // reset plot
